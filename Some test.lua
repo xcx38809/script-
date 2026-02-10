@@ -87,6 +87,7 @@ if getconnections then
 end
 local script = false
 local SendDis = false
+local SendDis2 = false
 task.spawn(function()
     while task.wait(1) do
         pcall(function()
@@ -96,17 +97,20 @@ task.spawn(function()
             local EventEnd = (t.hour * 60) + t.min
             local EventTimeEnd = EndEvent - EventEnd
             if EventTimeEnd >= 0 and EventTimeEnd <= 6 then
-              if not SendDis then
-                SendDis = true
-                send_discord("ถึงเวลาแล้ว!!!")
-              end
                 if game.PlaceId == 112311675882346 then
+                if not SendDis then
+                    SendDis = true
+                    send_discord("ถึงเวลาแล้ว!!!")
+                end
                     FindServerEvent()
                 else
                     if workspace.Pop.Curfew:FindFirstChildWhichIsA("BasePart", true) then
                         if not script then
                             script = true
+                            if not SendDis2 then
+                            SendDis2 = true
                             send_discord("เจอกิจกรรมแล้ว!!!")
+                            end
                             loadstring(game:HttpGet("https://pastebin.com/raw/TxXsuFzu"))()
                             end
                         end
@@ -116,6 +120,7 @@ task.spawn(function()
         end)
     end
 end)
+local SendDis3 = false
 task.spawn(function()
     local CheckEventEnd = false
     while task.wait(1) do
@@ -125,7 +130,10 @@ task.spawn(function()
                 if EventFolder then
                     CheckEventEnd = true
                 elseif CheckEventEnd then
+                    if not SendDis3 then
+                    SendDis3 = true
                     send_discord("กำลังออกจากเซิฟเวอร์")
+                    end
                     task.wait(1)
                     game:Shutdown()
                 end
@@ -133,3 +141,5 @@ task.spawn(function()
         end)
     end
 end)
+
+
