@@ -35,7 +35,7 @@ local function send_discord(Check,color)
     })
 end
 
-send_discord("เริ่มต้นการทำงาน!!!")
+send_discord("เริ่มต้นการทำงาน!!!", 3447003)
 local TimeEvent = {
     {hour = 11, min = 0},
     {hour = 17, min = 30},
