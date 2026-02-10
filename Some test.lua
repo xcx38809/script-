@@ -100,7 +100,7 @@ task.spawn(function()
                 if game.PlaceId == 112311675882346 then
                 if not SendDis then
                     SendDis = true
-                    send_discord("ถึงเวลาแล้ว!!!")
+                    send_discord("ถึงเวลาแล้ว!!!", 16711680)
                 end
                     FindServerEvent()
                 else
@@ -108,8 +108,11 @@ task.spawn(function()
                         if not script then
                             script = true
                             if not SendDis2 then
+                            for _,v in ipairs(game:GetService("Players").LocalPlayer.PlayerGui.TopbarStandard.Holders.Left.Widget.IconButton:GetDescendants()) do
+                            if (v:IsA("TextLabel") or v:IsA("TextButton")) and v.Text and v.Text:find("SERVER") then
                             SendDis2 = true
-                            send_discord("เจอกิจกรรมแล้ว!!!")
+                            send_discord("เจอกิจกรรมแล้วที่เซิฟ:"..v.Text, 10181046)
+                            end; end
                             end
                             loadstring(game:HttpGet("https://pastebin.com/raw/TxXsuFzu"))()
                             end
@@ -131,8 +134,12 @@ task.spawn(function()
                     CheckEventEnd = true
                 elseif CheckEventEnd then
                     if not SendDis3 then
-                    SendDis3 = true
-                    send_discord("กำลังออกจากเซิฟเวอร์")
+                    for _,v in ipairs(game:GetService("Players").LocalPlayer.PlayerGui.TopbarStandard.Holders.Left.Widget.IconButton:GetDescendants()) do
+                        if (v:IsA("TextLabel") or v:IsA("TextButton")) and v.Text and v.Text:find("SERVER") then
+                            SendDis3 = true
+                            send_discord("กำลังออกจากเซิฟเวอร์ :"..v.Text, 16744192)
+                        end
+                    end
                     end
                     task.wait(1)
                     game:Shutdown()
