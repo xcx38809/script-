@@ -47,7 +47,7 @@ task.spawn(function()
         if _G.Bringitem then
             pcall(function()
                 for _, v in pairs(workspace.Pop.Curfew:GetDescendants()) do
-                    if not Blacklist[v.Name] and v:IsA("TouchTransmitter") then
+                    if v.Name ~= "Wire" and v.Name ~= "Cement" and v:IsA("TouchTransmitter") then
                         local part = v.Parent
                         if part and game.Players.LocalPlayer.Character then
                             firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
@@ -59,7 +59,6 @@ task.spawn(function()
         end
     end
 end)
- 
 ]]
 
 
