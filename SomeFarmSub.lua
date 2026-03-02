@@ -1,6 +1,5 @@
 local Script = [[
 
-local Blacklist = {Cement = true, Wire = true}
 
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
  
@@ -38,16 +37,21 @@ T5:Toggle({
 })
  
 
+local Blacklist = {
+    Cement = true,
+    Wire = true
+}
+
 task.spawn(function()
     while wait() do
         if _G.Bringitem then
             pcall(function()
-                for _, v in pairs(workspace.Pop.Curfew:GetChildren()) do
-                    if not Blacklist[v.Name] then
-                        local touch = v:FindFirstChildWhichIsA("TouchTransmitter", true)
-                        if touch then
-                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v, 0)
-                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v, 1)
+                for _, v in pairs(workspace.Pop.Curfew:GetDescendants()) do
+                    if not Blacklist[v.Name] and v:IsA("TouchTransmitter") then
+                        local part = v.Parent
+                        if part and game.Players.LocalPlayer.Character then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 0)
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, part, 1)
                         end
                     end
                 end
@@ -55,7 +59,6 @@ task.spawn(function()
         end
     end
 end)
- 
  
 ]]
 
