@@ -186,6 +186,17 @@ Tab1:Toggle({
 	end
 })
 
+local Section1 = Tab1:Section({ Title = "| EXP Farm" })
+Tab1:Toggle({
+	Title = "Auto Farm EXP",
+	Type = "Checkbox",
+	Value = false,
+	Callback = function(ex)
+		_G.ExpFarm = ex
+	end
+})
+
+
 local Section1 = Tab1:Section({ Title = "| Process" })
 
 local SelectFarm = Tab1:Dropdown({
@@ -230,11 +241,44 @@ local SelectFarm = Tab2:Dropdown({
 Tab2:Button({
 	Title = "Teleport To Select",
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
-		game:GetService("ReplicatedStorage").MinimapPoints[_G.MiniMap].CFrame
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("ReplicatedStorage").MinimapPoints[_G.MiniMap].CFrame
 	end
 })
+local lastSell = 0
 
+task.spawn(function()
+	while task.wait() do
+		pcall(function()
+			if _G.ExpFarm then
+				if game:GetService("Players").LocalPlayer.Inventory.Apple.Value >= 40 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("ReplicatedStorage").MinimapPoints.Economy.CFrame
+					if tick() - lastSell >= 1 then
+						lastSell = tick()
+						game:GetService("ReplicatedStorage").Remotes.Economy:FireServer("Sell","Apple","40")
+					end
+				else
+					local Found = false
+					for _,v in pairs(workspace.Farm.Apple.FarmItem:GetDescendants()) do
+						if v:IsA("Model") then
+							Found = true
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:GetPivot() * CFrame.new(0,-5,0)
+							for _,d in pairs(v:GetDescendants()) do
+								if d:IsA("ProximityPrompt") then
+									fireproximityprompt(d)
+									break
+								end
+							end
+							break
+						end
+					end
+					if not Found then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("ReplicatedStorage").MinimapPoints["Apple"].CFrame
+					end
+				end
+			end
+		end)
+	end
+end)
 task.spawn(function()
 	while task.wait() do
 		pcall(function()
@@ -245,20 +289,21 @@ task.spawn(function()
 				end
 				for _,v in pairs(workspace.Farm[_G.SelectFarm].FarmItem:GetChildren()) do
 					if v:IsA("Model") then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:GetPivot() * CFrame.new(0,-6,0)
 						for _,d in pairs(v:GetDescendants()) do
 							if d:IsA("ProximityPrompt") then
 								Found = true
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
-								v:GetPivot() * CFrame.new(0,-5,0)
 								fireproximityprompt(d)
+								break
 							end
 							if d:IsA("TouchTransmitter") then
 								Found = true
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =v:GetPivot() * CFrame.new(0,-10,0)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:GetPivot() * CFrame.new(0,-10,0)
 								firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,d.Parent,0)
 								firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,d.Parent,1)
 							end
 						end
+						if Found then break end
 					end
 				end
 				if not Found then
@@ -272,7 +317,15 @@ task.spawn(function()
 	while task.wait() do
 		pcall(function()
 			if _G.Posss then
-			game:GetService("ReplicatedStorage").Remotes.Process:FireServer("Process",_G.SelectProcess,true)
+				if _G.SelectProcess == "Ore" then
+					if game:GetService("Players").LocalPlayer.Inventory.Ore.Value >= 80 then
+				game:GetService("ReplicatedStorage").Remotes.Process:FireServer("Process",_G.SelectProcess,true)
+					end
+				else
+					if game:GetService("Players").LocalPlayer.Inventory["Wood Log"].Value >= 80 then
+					game:GetService("ReplicatedStorage").Remotes.Process:FireServer("Process",_G.SelectProcess,true)
+					end
+				end
 			end
 		end)
 	end
@@ -282,7 +335,7 @@ end)
 
 task.spawn(function()
     game:GetService("RunService").Stepped:Connect(function()
-        if _G.Farm then
+        if _G.Farm or _G.ExpFarm then
             local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
             if hrp and not hrp:FindFirstChild("BodyClip") then
                 local noclip = Instance.new("BodyVelocity")
@@ -299,3 +352,7 @@ task.spawn(function()
         end
     end)
 end)
+
+
+
+
