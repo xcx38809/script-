@@ -250,6 +250,9 @@ task.spawn(function()
 	while task.wait() do
 		pcall(function()
 			if _G.ExpFarm then
+				if game.Players.LocalPlayer.Character.CharacterValue.Health.Value < 10 then
+					game:GetService("ReplicatedStorage").Remotes.Revive:FireServer("AED")
+				end
 				if game:GetService("Players").LocalPlayer.Inventory.Apple.Value >= 40 then
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("ReplicatedStorage").MinimapPoints.Economy.CFrame
 					if tick() - lastSell >= 1 then
@@ -352,7 +355,3 @@ task.spawn(function()
         end
     end)
 end)
-
-
-
-
