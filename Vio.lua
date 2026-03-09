@@ -121,6 +121,11 @@ for _, v in pairs(game:GetService("ReplicatedStorage").MinimapPoints:GetChildren
 	table.insert(MiniMap, v.Name)
 	end
 end
+if getconnections then 
+    for _, v in next, getconnections(game.Players.LocalPlayer.Idled) do
+        v:Disable()
+    end
+end
 -- =======================
 -- WindUI Setup
 -- =======================
@@ -355,3 +360,4 @@ task.spawn(function()
         end
     end)
 end)
+
