@@ -191,19 +191,8 @@ Tab1:Toggle({
 	end
 })
 
-local Section1 = Tab1:Section({ Title = "| EXP Farm" })
-Tab1:Toggle({
-	Title = "Auto Farm EXP",
-	Type = "Checkbox",
-	Value = false,
-	Callback = function(ex)
-		_G.ExpFarm = ex
-	end
-})
-
 
 local Section1 = Tab1:Section({ Title = "| Process" })
-
 local SelectFarm = Tab1:Dropdown({
 	Title = "Select Process",
 	Values = {"Ore","Wood Plank"},
@@ -214,14 +203,31 @@ local SelectFarm = Tab1:Dropdown({
 		_G.SelectProcess = Niioqm
 	end
 })
-
-
 Tab1:Toggle({
 	Title = "Fast Process",
 	Type = "Checkbox",
 	Value = false,
 	Callback = function(sidi)
 		_G.Posss = sidi
+	end
+})
+
+local Section1 = Tab1:Section({ Title = "| EXP Farm" })
+Tab1:Toggle({
+	Title = "Auto Farm EXP",
+	Type = "Checkbox",
+	Value = false,
+	Callback = function(ex)
+		_G.ExpFarm = ex
+	end
+})
+local Section1 = Tab1:Section({ Title = "| Cemen Auto" })
+Tab1:Toggle({
+	Title = "Auto Farm Cemen",
+	Type = "Checkbox",
+	Value = false,
+	Callback = function(mokq)
+		_G.Cemen = mokq
 	end
 })
 
@@ -281,6 +287,26 @@ task.spawn(function()
 					end
 					if not Found then
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("ReplicatedStorage").MinimapPoints["Apple"].CFrame
+					end
+				end
+			end
+		end)
+	end
+end)
+task.spawn(function()
+	while task.wait() do
+		pcall(function()
+			if _G.Cemen then
+			for _,v in pairs(workspace.Cement:GetChildren()) do
+				if v:IsA("Model") then
+					if not v:FindFirstChild("CementBag") then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:GetPivot()*CFrame.new(0,0,5)
+						fireproximityprompt(v.CementBag.Attachment.ProximityPrompt)
+					elseif v.CementBag:FindFirstChild("BillboardGui") and v.CementBag.BillboardGui.Enabled == false then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:GetPivot()*CFrame.new(0,0,5)
+							fireproximityprompt(v.CementBag.Attachment.ProximityPrompt)
+							game:GetService("ReplicatedStorage").Remotes.WorkEvents:FireServer("CementSteal")
+						end
 					end
 				end
 			end
@@ -360,4 +386,6 @@ task.spawn(function()
         end
     end)
 end)
+
+
 
