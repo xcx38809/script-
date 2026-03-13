@@ -371,7 +371,7 @@ end)
 
 task.spawn(function()
     game:GetService("RunService").Stepped:Connect(function()
-        if _G.Farm or _G.ExpFarm then
+        if _G.Farm or _G.ExpFarm or _G.Cemen then
             local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
             if hrp and not hrp:FindFirstChild("BodyClip") then
                 local noclip = Instance.new("BodyVelocity")
@@ -388,5 +388,3 @@ task.spawn(function()
         end
     end)
 end)
-
-
