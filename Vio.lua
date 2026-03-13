@@ -302,9 +302,11 @@ task.spawn(function()
 					if not v:FindFirstChild("CementBag") then
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:GetPivot()*CFrame.new(0,0,5)
 						fireproximityprompt(v.CementBag.Attachment.ProximityPrompt)
+						wait(1)
 					elseif v.CementBag:FindFirstChild("BillboardGui") and v.CementBag.BillboardGui.Enabled == false then
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:GetPivot()*CFrame.new(0,0,5)
 							fireproximityprompt(v.CementBag.Attachment.ProximityPrompt)
+							wait(1)
 							game:GetService("ReplicatedStorage").Remotes.WorkEvents:FireServer("CementSteal")
 						end
 					end
@@ -386,6 +388,5 @@ task.spawn(function()
         end
     end)
 end)
-
 
 
