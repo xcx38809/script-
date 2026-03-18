@@ -1,5 +1,3 @@
-
-
 local LMG2L = {}
 local TS = game:GetService("TweenService")
 
@@ -299,7 +297,10 @@ task.spawn(function()
 			if _G.Cemen then
 			if game:GetService("Players").LocalPlayer.Inventory["Cement Powder"].Value >= 5 then
 				game:GetService("ReplicatedStorage").Remotes.Craft:FireServer("General","Cement",1)
-				end
+			end
+			if game:GetService("Players").LocalPlayer.Inventory["Cement"].Value >= 100 then
+				game:GetService("ReplicatedStorage").Remotes.Craft:FireServer("General","Cement Pack",1)
+			end
 			for _,v in pairs(workspace.Cement:GetChildren()) do
 				if v:IsA("Model") then
 					if not v:FindFirstChild("CementBag") then
